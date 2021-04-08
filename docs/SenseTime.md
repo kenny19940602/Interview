@@ -8,7 +8,7 @@
  * 1、保证变量的可见性 
  * 2、保证变量的有序性(防止指令重排序)
  * 3、**不保证**变量的原子性
- 
+
 **首先我们由JMM模型可知，只有同时满足可见性、有序性、原子性。才能保证并发安全，由于volatile不能保证原子性。所以只使用volatile是无法做到线程安全的。**
 
 ### volatile原理
@@ -210,9 +210,9 @@ LinkedHashMap的出现就是为平衡这些因素，能以O(1)时间复杂度查
 
 
 **优秀的程序员=数据结构+算法(而不是API工程师)**
- 
+
 ## 5、列出解决Hash冲突的多种方法：
-    
+
  * 1、开放定址法
 
     这种方法也称再散列法，其基本思想是：当关键字key的哈希地址p=H（key）出现冲突时，以p为基础，产生另一个哈希地址p1，如果p1仍然冲突，再以p为基础，产生另一个哈希地址p2，…，直到找出一个不冲突的哈希地址pi ，将相应元素存入其中。这种方法有一个通用的再散列函数形式：
@@ -245,7 +245,7 @@ LinkedHashMap的出现就是为平衡这些因素，能以O(1)时间复杂度查
          这种方法的基本思想是将所有哈希地址为i的元素构成一个称为同义词链的单链表，并将单链表的头指针存在哈希表的第i个单元中，因而查找、插入和删除主要在同义词链中进行。链地址法适用于经常进行插入和删除的情况。
  * 4、建立公共溢出区  
          这种方法的基本思想是：将哈希表分为基本表和溢出表两部分，凡是和基本表发生冲突的元素，一律填入溢出表
-         
+      
 ## 6、Stack和Queue的特性分别是什么？
 
 * 1.stack堆栈，没有迭代器，支持push()方法。后进先出,top()返回最顶端的元素,pop()剔除最顶元素，后进先出（LIFO）；
@@ -271,9 +271,9 @@ LinkedList间接实现类Queue
 1）synchronized属于JVM层面，属于java的关键字
 
  * monitorenter（底层是通过monitor对象来完成，其实wait/notify等方法也依赖于monitor对象 只能在同步块或者方法中才能调用 wait/ notify等方法）  
- 
+
  * Lock是具体类（java.util.concurrent.locks.Lock）是api层面的锁
- 
+
 2）使用方法：
 
  * synchronized：不需要用户去手动释放锁，当synchronized代码执行后，系统会自动让线程释放对锁的占用
@@ -287,16 +287,17 @@ LinkedList间接实现类Queue
     * 设置超时方法，trylock(long timeout, TimeUnit unit)
     * lockInterrupible() 放代码块中，调用interrupt() 方法可以中断
     
+
 4）加锁是否公平
 
  * synchronized：非公平锁
  * ReentrantLock：默认非公平锁，构造函数可以传递boolean值，true为公平锁，false为非公平锁
- 
+
 5）锁绑定多个条件Condition
 
  * synchronized：没有，要么随机，要么全部唤醒
  * ReentrantLock：用来实现分组唤醒需要唤醒的线程，可以精确唤醒，而不是像synchronized那样，要么随机，要么全部唤醒
- 
+
 结论：synchronized在类的普通方法锁的是对象，在静态那方法上锁定的是class
 
 synchronized对类的当前实例进行加锁，防止其他线程同时访问该类的该实例的所有synchronized块，注意这里是“ 类的当前实例 ”，类的两个不同实例就没有这种约束了
@@ -406,34 +407,34 @@ Java中线程的状态分为6种。
 这6种状态定义在Thread类的State枚举中，可查看源码进行一一对应。
 
  * 1. 初始状态
- 
+
 实现Runnable接口和继承Thread可以得到一个线程类，new一个实例出来，线程就进入了初始状态。
 
  * 2.1. 就绪状态
- 
+
 就绪状态只是说你资格运行，调度程序没有挑选到你，你就永远是就绪状态。
 调用线程的start()方法，此线程进入就绪状态。
 当前线程sleep()方法结束，其他线程join()结束，等待用户输入完毕，某个线程拿到对象锁，这些线程也将进入就绪状态。
 当前线程时间片用完了，调用当前线程的yield()方法，当前线程进入就绪状态。
 锁池里的线程拿到对象锁后，进入就绪状态。
  * 2.2. 运行中状态
- 
+
 线程调度程序从可运行池中选择一个线程作为当前线程时线程所处的状态。这也是线程进入运行状态的唯一一种方式。
 
  * 3. 阻塞状态
- 
+
 阻塞状态是线程阻塞在进入synchronized关键字修饰的方法或代码块(获取锁)时的状态。
 
  * 4. 等待
- 
+
 处于这种状态的线程不会被分配CPU执行时间，它们要等待被显式地唤醒，否则会处于无限期等待的状态。
 
  * 5. 超时等待
- 
+
 处于这种状态的线程不会被分配CPU执行时间，不过无须无限期等待被其他线程显示地唤醒，在达到一定时间后它们会自动唤醒。
 
  * 6. 终止状态
- 
+
 当线程的run()方法完成时，或者主线程的main()方法完成时，我们就认为它终止了。这个线程对象也许是活的，但是，它已经不是一个单独执行的线程。线程一旦终止了，就不能复生。
 在一个终止的线程上调用start()方法，会抛出java.lang.IllegalThreadStateException异常。
 
@@ -447,29 +448,29 @@ Java中线程的状态分为6种。
 * 同步队列状态
 
  * 当前线程想调用对象A的同步方法时，发现对象A的锁被别的线程占有，此时当前线程进入同步队列。简言之，同步队列里面放的都是想争夺对象锁的线程。
- 
+
  * 当一个线程1被另外一个线程2唤醒时，1线程进入同步队列，去争夺对象锁。
- 
+
  * 同步队列是在同步的环境下才有的概念，一个对象对应一个同步队列。
- 
+
  * 线程等待时间到了或被notfy/notifyAll唤醒后，会进入同步队列竞争锁，如果获得锁，进入RUNNABLE状态，否则进入BLOCKED状态等待获取锁。
 
 * 几个方法的比较
 
  * Thread.sleep(long millis)，一定是当前线程调用此方法，当前线程进入TIMED_WAITING状态，但不释放对象锁，millis后线程自动苏醒进入就绪状态。作用：给其它线程执行机会的最佳方式。
- 
+
  * Thread.yield()，一定是当前线程调用此方法，当前线程放弃获取的CPU时间片，但不释放锁资源，由运行状态变为就绪状态，让OS再次选择线程。作用：让相同优先级的线程轮流执行，但并不保证一定会轮流执行。实际中无法保证yield()达到让步目的，因为让步的线程还有可能被线程调度程序再次选中。Thread.yield()不会导致阻塞。该方法与sleep()类似，只是不能由用户指定暂停多长时间。
- 
+
  * thread.join()/thread.join(long millis)，当前线程里调用其它线程t的join方法，当前线程进入WAITING/TIMED_WAITING状态，当前线程不会释放已经持有的对象锁。线程t执行完毕或者millis时间到，当前线程一般情况下进入RUNNABLE状态，也有可能进入BLOCKED状态（因为join是基于wait实现的）。
- 
+
  * obj.wait()，当前线程调用对象的wait()方法，当前线程释放对象锁，进入等待队列。依靠notify()/notifyAll()唤醒或者wait(long timeout) timeout时间到自动唤醒。
- 
+
  * obj.notify()唤醒在此对象监视器上等待的单个线程，选择是任意性的。notifyAll()唤醒在此对象监视器上等待的所有线程。
- 
+
  * LockSupport.park()/LockSupport.parkNanos(long nanos),LockSupport.parkUntil(long deadlines), 当前线程进入WAITING/TIMED_WAITING状态。对比wait方法,不需要获得锁就可以让线程进入WAITING/TIMED_WAITING状态，需要通过LockSupport.unpark(Thread thread)唤醒。
- 
+
 * 疑问
- 
+
  等待队列里许许多多的线程都wait()在一个对象上，此时某一线程调用了对象的notify()方法，那唤醒的到底是哪个线程？随机？队列FIFO？or sth else？Java文档就简单的写了句：选择是任意性的（The choice is arbitrary and occurs at the discretion of the implementation）。
 
 ## 10、列出JDK中线程池类ThreadPoolExecutor构造函数的参数。向其提交一个任务时其底层实现逻辑中依次使用到的参数顺序是什么
@@ -579,10 +580,10 @@ ExecutorService newFixedThreadPool = Executors.newFixedThreadPool(5);
 ![20200705125450.png](images/20200705125450.png)
 
 **总结:因为线程池大小为3，每个任务输出index后sleep 2秒，所以每两秒打印3个数字。**
-  
+
   定长线程池的大小最好根据系统资源进行设置。如Runtime.getRuntime().availableProcessors()**
-  
-  
+
+
 newScheduledThreadPool
 
 创建一个定长线程池，支持定时及周期性任务执行。延迟执行示例代码如下：
@@ -685,7 +686,7 @@ class TaskThred implements Runnable {
 ```
 
 ### 合理配置线程池
- 
+
 
 #### CPU密集
 CPU密集的意思是该任务需要大量的运算，而没有阻塞，CPU一直全速运行。
@@ -822,9 +823,9 @@ Semaphore 有两种模式，公平模式和非公平模式。
 
 ### CountDownLatch （倒计时器）
  CountDownLatch允许 count 个线程阻塞在一个地方，直至所有线程的任务都执行完毕。在 Java 并发中，countdownlatch 的概念是一个常见的面试题，所以一定要确保你很好的理解了它。
- 
+
  CountDownLatch是共享锁的一种实现,它默认构造 AQS 的 state 值为 count。当线程使用countDown方法时,其实使用了tryReleaseShared方法以CAS的操作来减少state,直至state为0就代表所有的线程都调用了countDown方法。当调用await方法的时候，如果state不为0，就代表仍然有线程没有调用countDown方法，那么就把已经调用过countDown的线程都放入阻塞队列Park,并自旋CAS判断state == 0，直至最后一个线程调用了countDown，使得state == 0，于是阻塞的线程便判断成功，全部往下执行。
- 
+
 * CountDownLatch 的两种典型用法
  某一线程在开始运行前等待 n 个线程执行完毕。将 CountDownLatch 的计数器初始化为 n ：new CountDownLatch(n)，每当一个任务线程执行完毕，就将计数器减 1 countdownlatch.countDown()，当计数器的值变为 0 时，在CountDownLatch上 await() 的线程就会被唤醒。一个典型应用场景就是启动一个服务时，主线程需要等待多个组件加载完毕，之后再继续执行。
  实现多个线程开始执行任务的最大并行性。注意是并行性，不是并发，强调的是多个线程在某一时刻同时开始执行。类似于赛跑，将多个线程放到起点，等待发令枪响，然后同时开跑。做法是初始化一个共享的 CountDownLatch 对象，将其计数器初始化为 1 ：new CountDownLatch(1)，多个线程在开始执行任务前首先 coundownlatch.await()，当主线程调用 countDown() 时，计数器变为 0，多个线程同时被唤醒。
@@ -864,7 +865,7 @@ public class CountDownLatchExample1 {
     Thread.sleep(1000);// 模拟请求的耗时操作
   }
 }
-```  
+```
 
 上面的代码中，我们定义了请求的数量为 550，当这 550 个请求被处理完成之后，才会执行System.out.println("finish");。
 
@@ -1319,16 +1320,16 @@ class CachedData {
 
 * 系统资源的竞争
  当系统中供多个进程共享的资源如打印机、公用队列等，其数目不足以满足诸进程的需要时，会引起进程对资源的竞争而产生死锁。
- 
+
 * 进程运行推进顺序不当引起死锁
  * 进程推进顺序合法
-  当进程P1和P2并发执行时，如果按照下述顺序推进：P1：Request(R1); P1: Request(R2); P1: Relese(R1);
-  P1: Relese(R2); P2: Request(R2); P2 : Request(R1); P2: Relese(R2); P2: Relese(R1);
-  这两个进程便可顺利完成，这种不会引起进程死锁的推进顺序是合法的。
+    当进程P1和P2并发执行时，如果按照下述顺序推进：P1：Request(R1); P1: Request(R2); P1: Relese(R1);
+    P1: Relese(R2); P2: Request(R2); P2 : Request(R1); P2: Relese(R2); P2: Relese(R1);
+    这两个进程便可顺利完成，这种不会引起进程死锁的推进顺序是合法的。
  * 进程推进顺序非法
-  若P1保持了资源R1，P2保持了资源R2，系统处于不安全状态，因为这两个进程再向前推进，便可能发送死锁。
-  例如，当P1运行到P1：Request(R2) 时，将因为R2已被P2占用而阻塞;当P2运行到P2：Request(R1) 时，
-  也将因R1已被P1占用而阻塞，于是发生进程死锁。
+    若P1保持了资源R1，P2保持了资源R2，系统处于不安全状态，因为这两个进程再向前推进，便可能发送死锁。
+    例如，当P1运行到P1：Request(R2) 时，将因为R2已被P2占用而阻塞;当P2运行到P2：Request(R1) 时，
+    也将因R1已被P1占用而阻塞，于是发生进程死锁。
 
 ### 产生死锁的四个必要条件：
 
@@ -1356,7 +1357,7 @@ class CachedData {
  * 打破循环等待条件： 实现资源有序分配策略，对所有设备实现分类编号，所有进程只能采用按序号递增的形式申请资源
 
 ### 死锁避免和死锁预防的区别：
- 
+
  死锁预防是设法至少破坏产生死锁的四个必要条件之一，严格的防止死锁的出现：而死锁避免则不那么严格的限制
  产生死锁的必要条件的存在，因为即使死锁的必要条件存在，也不一定发生死锁。死锁避免是在系统运行过程中
  注意避免死锁的最中发生。
@@ -1415,7 +1416,7 @@ INSERT INTO method_lock (method_name, desc) VALUES ('methodName', '测试的meth
 
 **缺点**
  因为需要频繁的创建和删除节点，性能上不如Redis方式
- 
+
 ### 基于缓存（Redis等）实现(重点)；
 
 分布式锁实现的三个核心要素：
@@ -1579,7 +1580,7 @@ list列表,它是简单的字符串列表，你可以添加一个元素到列表
  * LPUSH + RPOP
 * Blocking MQ（阻塞队列）
  * LPUSH+BRPOP
- 
+
 **应用场景**
 
 * 实现简单的消息队列
@@ -1995,23 +1996,23 @@ df -h
 ### UUID
 
 **优点：**
- 
+
  * 代码实现简单。
  * 本机生成，没有性能问题
  * 因为是全球唯一的ID，所以迁移数据容易
- 
+
 **缺点：**
- 
+
  * 每次生成的ID是无序的，无法保证趋势递增
  * UUID的字符串存储，查询效率慢
  * 存储空间大
  * ID本事无业务含义，不可读
- 
+
 **应用场景：**
- 
+
  * 类似生成token令牌的场景
  * 不适用一些要求有趋势递增的ID场景
- 
+
 ### MySQL主键自增
 
 这个方案就是利用了MySQL的主键自增auto_increment，默认每次ID加1。
@@ -2046,7 +2047,7 @@ df -h
 **应用场景：**
 
  * 数据不需要扩容的场景
- 
+
 ### 雪花snowflake算法
 
 ![885859-20200513143103962-1801613700.png](images/885859-20200513143103962-1801613700.png)
@@ -2481,7 +2482,7 @@ expansion：如果创建了一个新的子过滤器，则其大小将是当前�
 127.0.0.1:6379> BF.EXISTS myFilter github
 (integer) 0
 ```
-    
+
 ## 31、Mysql innoDB中的索引使用的数据结构?
 
 B+Tree
@@ -2494,7 +2495,7 @@ B+Tree
  * 链表：查询时间长。
  * hash : 定位效率高，但是没有顺序性。
  * 树结构：B+树在查询和插入都是非常适合的
- 
+
 **为什么选用B+Tree**
 
  * B+树是B-树的变种的多路绝对平衡查找树，他拥有B-树的优势
@@ -2502,7 +2503,7 @@ B+Tree
  * B+树的磁盘读写能力更强
  * B+树的排序能力更强
  * B+树的查询效率更加稳定
- 
+
 ### B+Tree介绍
 
 **b+树有个特点，数据都是存在子节点上（叶子节点）如下图：**
@@ -2606,43 +2607,43 @@ Innodb中B+Tree，主键索引叶子节点存储的不再是数据对应的存�
 ## 37、列出你知道的加密算法
 
     1.MD5加密算法
-
+    
     MD5的全称是Message-Digest Algorithm 5，MD5可以将任意长度的“字节串”变换成一个128bit的大整数，并且它是一个不可逆的字符串变换算法，换句话说是，即使你看到源程序和算法描述，也无法将一个MD5的值变换回原始的字符串，从数学原理上说，是因为原始的字符串有无穷多个，这有点象不存在反函数的数学函数。
-
+    
     2. DES加密算法
-
+    
     DES全称为Data Encryption Standard，即数据加密标准，是一种使用密钥加密的块算法， DES算法的入口参数有三个：Key、Data、Mode。其中Key为7个字节共56位,是DES算法的工作密钥;Data为8个字节64位，是要被加密或被解密的数据。
-
+    
     3. RSA加密算法
-
+    
     RSA是目前最有影响力的公钥加密算法，它能够抵抗到目前为止已知的绝大多数密码攻击，已被ISO推荐为公钥数据加密标准。RSA是被研究得最广泛的公钥算法，从提出到现在，经历了各种攻击的考验，逐渐为人们接受，普遍认为是目前秀的公钥方案之一。
-
+    
     4.IDEA加密算法
-
+    
     IDEA（International Data Encryption Algorithm）国际数据加密算法：使用 128 位密钥提供非常强的安全性；
-
+    
     5. DSA加密算法
-
+    
     DSA（Digital Signature Algorithm）：数字签名算法，是一种标准的 DSS（数字签名标准）。
-
+    
     6.AES加密算法
-
+    
     AES加密算法又称Rijndael加密法，目前已经被多方分析且广为全世界所使用。经过五年发展，AES加密算法已然成为对称密钥加密中的算法之一。
-
+    
     7. Elgamal
-
+    
     ElGamal算法，是一种较为常见的加密算法，它是基于1984年提出的公钥密码体制和椭圆曲线加密体系。既能用于数据加密也能用于数字签名。
-
+    
     8. Base64加密算法
-
+    
     Base64加密算法是网络上最常见的用于传输8bit字节代码的编码方式之一，Base64编码可用于在HTTP环境下传递较长的标识信息。
-
+    
     9. SHA1加密算法
-
+    
     SHA1是和MD5一样流行的消息摘要算法。SHA加密算法模仿MD4加密算法。SHA1主要适用于数字签名标准里面定义的数字签名算法。
-
+    
     10. PKCS加密算法
-
+    
     PKCS是由美国RSA数据安全公司及其合作伙伴制定的一组公钥密码学标准，其中包括证书申请、证书更新、证书作废表发布、扩展证书内容以及数字签名、数字信封的格式等方面的一系列相关协议。
 ## 38、处理游览器跨域的方法分别有
 
@@ -2650,7 +2651,7 @@ Innodb中B+Tree，主键索引叶子节点存储的不再是数据对应的存�
 
   在页面中使用js访问其他网站的数据时，就会出现跨域问题，比如在网站中使用ajax请求其他网站的天气、快递或者其他数据接口时，以及hybrid app中请求数据，浏览器会提     示一下错误：
   XMLHttpRequest cannot load http://你请求的域名. No 'Access-Control-Allow-Origin' header is present on the requested resource. Origin 'http://当前页的域       名' is therefore not allowed access.
-  
+
 ### 为什么会出现跨域问题?
 
 因为浏览器收到同源策略的限制，当前域名的js只能读取同域下的窗口属性。
@@ -2658,13 +2659,13 @@ Innodb中B+Tree，主键索引叶子节点存储的不再是数据对应的存�
  同源策略： 不同的域名, 不同端口, 不同的协议不允许共享资源的， 保障浏览器安全。
 
  同源策略时针对浏览器设置的门槛。如果绕过浏览就能实现跨域，所以说早期的跨域都是打着安全路数的擦边球，都可以认为是 hack 处理。
- 
+
 ### 现在总结一下解决跨域的几种方法?
 
 #### jsonp 跨域方法
 
 我们提供一个 script 标签. 请求页面中的数据, 同时传入一个回调函数的名字. 服务器端得到名字后, 拼接函数执行格式的字符串. 发送回浏览器. script 在下载代码以后并执行, 执行的就是这个函数调用形式的字符串, 因此就将本地函数调用了.同时拿到了从服务器端得到的数据。
-   
+
 #### window.name
 
 window对象的name属性是一个很特别的属性，当该window的location变化，然后重新加载，它的name属性可以依然保持不变。那么我们可以在页面A中用iframe加载其他域的页面B，而页面B中用JavaScript把需要传递的数据赋值给 window.name，iframe加载完成之后，页面A修改iframe的地址，将其变成同域的一个地址，然后就可以读出window.name的值了。这个方式非常适合单向的数据请求，而且协议简单、安全。不会像JSONP那样不做限制地执行外部脚本。
@@ -2796,13 +2797,13 @@ XSS防御的总体思路是：对输入(和URL参数)进行过滤，对输出进
  CSRF攻击攻击原理及过程如下：
 
        1. 用户C打开浏览器，访问受信任网站A，输入用户名和密码请求登录网站A；
-
+    
        2.在用户信息通过验证后，网站A产生Cookie信息并返回给浏览器，此时用户登录网站A成功，可以正常发送请求到网站A；
-
+    
        3. 用户未退出网站A之前，在同一浏览器中，打开一个TAB页访问网站B；
-
+    
        4. 网站B接收到用户请求后，返回一些攻击性代码，并发出一个请求要求访问第三方站点A；
-
+    
        5. 浏览器在接收到这些攻击性代码后，根据网站B的请求，在用户不知情的情况下携带Cookie信息，向网站A发出请求。网站A并不知道该请求其实是由B发起的，所以会根据用户C的Cookie信息以C的权限处理该请求，导致来自网站B的恶意代码被执行。 
 
 防御：
@@ -2959,7 +2960,7 @@ console.log('serve listening on 8888')
 
 最后，在HTTP2.0 中，由于使用了信道复用技术，可以在同一个TCP连接中并发地发送HTTP 请求，也就是说请求一个网站的数据的时候，只需要一个TCP连接。
 
-## 42、简单画出tcp三次握手过程
+## 42、简单画出tcp三次握手过程  
 
 ### TCP报文格式简介
 
@@ -3188,5 +3189,161 @@ TCP释放连接时之所以需要“四次挥手”,是因为FIN释放连接报�
 故这是连续的“四次挥手”过程，与前面的分析相符。
 
 ![20200711215254.png](images/20200711215254.png)
+
+
+
+
+
+
+
+##   42、如何确保消息正确地发送至 RabbitMQ？如何确保消息接收方消费了消息？
+
+
+
+#### 主要考的消息队列的应答模式
+
+### 答： 消息队列RabbitMQ应答模式(自动、手动)
+
+为了确保消息不会丢失，RabbitMQ支持消息应答。消费者发送一个消息应答，告诉RabbitMQ这个消息已经接收并且处理完毕了。RabbitMQ就可以删除它了。
+
+如果一个消费者挂掉却没有发送应答，RabbitMQ会理解为这个消息没有处理完全，然后交给另一个消费者去重新处理。这样，你就可以确认即使消费者偶尔挂掉也不会丢失任何消息了。
+
+没有任何消息超时限制；只有当消费者挂掉时，RabbitMQ才会重新投递。即使处理一条消息会花费很长的时间。
+
+消息应答是默认打开的。我们通过显示的设置autoAsk=true关闭这种机制。即自动应答开，一旦我们完成任务，消费者会自动发送应答。通知RabbitMQ消息已被处理，可以从内存删除。如果消费者因宕机或链接失败等原因没有发送ACK(不同ActiveMQ，在RabbitMQ里，消息没有过期的概念)，则RabbitMQ会将消息重新发送给其他监听在队列的下一个消费者。
+
+
+
+案例：
+
+生产者端代码不变，消费者端代码这部分就是用于开启手动应道模式的。
+
+channel.basicConsume(QUEUE_NAME,false,defaultConsumer);
+
+注：第二个参数值为false代表关闭RabbitMQ的自动应答机制，改为手动应答。
+
+在处理完消息时，返回应答状态，true表示为自动应答模式。
+
+channel.basicAck(envelope,getDeliveryTag(),false);
+
+
+
+**应答模式：自动签收~~~**
+
+
+
+自动应答：不在乎消费者对消息处理是否成功，都会告诉队列删除消息。如果处理消息失败，实现自动补偿(队列投递过去 重新处理)。
+
+
+
+手动应答：消费者处理完业务逻辑，手动返回ack(通知)告诉队列处理完毕了，队列进而删除消息。
+
+
+
+生产者代码不变，消费者：
+
+```java
+package com.toov5.Consumer;
+
+import java.io.IOException;
+import java.util.concurrent.TimeoutException;
+
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.DefaultConsumer;
+import com.rabbitmq.client.Envelope;
+import com.rabbitmq.client.AMQP.BasicProperties;
+import com.toov5.utils.MQConnectionUtils;
+
+public class Consumer {
+
+    //队列名称
+    private static final String QUEUE_NAME = "test_queue";
+
+    public static void main(String[] args) throws IOException, TimeoutException {
+        System.out.println("消费者启动..........");
+        //创建新的连接
+        Connection connection = MQConnectionUtils.newConnection();
+        //创建Channel
+        Channel channel = connection.createChannel();
+        // 消费者关联队列
+        channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+
+        DefaultConsumer defaultConsumerr = new DefaultConsumer(channel) {
+            //监听获取消息
+            @Override
+            public void handleDelivery(String consumerTag, Envelope envelope, BasicProperties properties,
+                                       byte[] body) throws IOException {
+                String msg = new String(body, "UTF-8");
+                System.out.println("消费者获取生产者消息：" + msg);
+            }
+        };
+        //牵手模式设置  默认自动应答模式  true:自动应答模式  
+        channel.basicConsume(QUEUE_NAME, false, defaultConsumerr);//    fanse手动应答          
+
+//            //关闭通道和连接
+//             channel.close();
+//             connection.close();
+    }
+}
+
+```
+
+手动应答。此时 消息队列的消息 一直没有被清除掉
+
+如下修改：
+
+```java
+
+package com.toov5.Consumer;
+ 
+import java.io.IOException;
+import java.util.concurrent.TimeoutException;
+ 
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.DefaultConsumer;
+import com.rabbitmq.client.Envelope;
+import com.rabbitmq.client.AMQP.BasicProperties;
+import com.toov5.utils.MQConnectionUtils;
+ 
+public class Consumer {
+  
+     //队列名称
+        private static final String QUEUE_NAME = "test_queue";
+        
+        public static void main(String[] args) throws IOException, TimeoutException {
+            System.out.println("消费者启动..........");
+            //创建新的连接
+        Connection connection = MQConnectionUtils.newConnection();
+           //创建Channel
+            final Channel channel = connection.createChannel();
+            // 消费者关联队列
+            channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+            
+              DefaultConsumer defaultConsumerr = new DefaultConsumer(channel) {
+                  //监听获取消息
+                    @Override
+                    public void handleDelivery(String consumerTag, Envelope envelope, BasicProperties properties,
+                            byte[] body) throws IOException {
+                        String msg =new String(body,"UTF-8");
+                        System.out.println("消费者获取生产者消息："+msg);
+                        channel.basicAck(envelope.getDeliveryTag(), false);  //手动应答 告诉消息队列服务器 消费成功
+                    }
+              };
+            //牵手模式设置  默认自动应答模式  true:自动应答模式  
+              channel.basicConsume(QUEUE_NAME, false, defaultConsumerr);//    fanse手动应答          
+              
+//            //关闭通道和连接
+//             channel.close();
+//             connection.close();
+        }
+}
+
+```
+
+
+
+
 
 
