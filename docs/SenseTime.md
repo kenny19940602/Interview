@@ -3344,6 +3344,42 @@ public class Consumer {
 
 
 
+## 44、有一个表名为table的表有2个字段，x、y。用一条SQL交换x和y的值。
 
 
+
+| x    | y    |
+| ---- | ---- |
+| y1   | x1   |
+
+
+
+一条SQL使x=x1，y=y1
+
+
+
+答:UPDATE demo1 set x=(@t:=x),x=y,y=@t;
+
+
+
+## 45、表名table，字段name，subjects，score。要求用一条SQL查询出有3subjects且score大于80
+
+
+
+| name | subjects | score |
+| ---- | -------- | ----- |
+| 张三 | 历史     | 44    |
+| 张三 | 语文     | 81    |
+| 李四 | 历史     | 88    |
+| 李四 | 语文     | 79    |
+| 李四 | 数学     | 99    |
+| 王五 | 历史     | 11    |
+| 王五 | 语文     | 89    |
+| 王五 | 数学     | 1     |
+
+
+
+
+
+select * from table where score>=80 and name in (SELECT name FROM `demo` group by name HAVING count(name) >2 )
 
