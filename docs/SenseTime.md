@@ -3358,7 +3358,7 @@ public class Consumer {
 
 
 
-答:UPDATE demo1 set x=(@t:=x),x=y,y=@t;
+答:UPDATE table set x=(@t:=x),x=y,y=@t;
 
 
 
@@ -3381,5 +3381,5 @@ public class Consumer {
 
 
 
-select * from table where score>=80 and name in (SELECT name FROM `demo` group by name HAVING count(name) >2 )
+select * from table where score>=80 and name in (SELECT name FROM table group by name HAVING count(name) >2 )
 
